@@ -5,7 +5,9 @@ function createBounty(req, res) {
     bountyService
         .createBounty(repoLink, issueDescription)
         .then((result) => {
-            res.send(201).json({ message: "Bounty successfully created." });
+            if (result) {
+                res.send(201).json({ message: "Bounty successfully created." });
+            }
         })
         .catch((err) => {
             next(err);
