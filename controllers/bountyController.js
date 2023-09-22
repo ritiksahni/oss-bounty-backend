@@ -5,12 +5,10 @@ function createBounty(req, res) {
     bountyService
         .createBounty(repoLink, issueDescription)
         .then((result) => {
-            if (result) {
-                res.send(201).json({ message: "Bounty successfully created." });
-            }
+            res.status(201).json({ message: "Bounty successfully created." });
         })
         .catch((err) => {
-            next(err);
+            throw err;
         });
 }
 
@@ -18,10 +16,10 @@ function listBounties(req, res) {
     bountyService
         .listBounties()
         .then((result) => {
-            res.json(result);
+            res.status(200).json(result);
         })
         .catch((err) => {
-            next(err);
+            throw err;
         });
 }
 

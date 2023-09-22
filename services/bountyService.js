@@ -5,7 +5,7 @@ function createBounty(repoLink, issueDescription) {
         DEFAULT,
         ?,
         ?,
-        ?
+        0
     )`;
 
     const values = [repoLink, issueDescription];
@@ -19,7 +19,7 @@ function createBounty(repoLink, issueDescription) {
 }
 
 function listBounties() {
-    const sqlQuery = `SELECT * FROM bounties`;
+    const sqlQuery = `SELECT * FROM bounties WHERE isApproved = 1`;
 
     return new Promise((resolve, reject) => {
         db.query(sqlQuery, function (err, rows, fields) {

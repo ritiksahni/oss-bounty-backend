@@ -3,6 +3,7 @@ const config = require("./config/oauth"); // Auth0 Configuration
 
 // Loading routes
 const bountyRoutes = require("./routes/bountyRoutes");
+const adminRoutes = require("./routes/admin/adminRoutes");
 
 // Library Imports
 const { auth } = require("express-openid-connect");
@@ -20,8 +21,9 @@ app.get("/", (req, res) => {
     res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
 });
 
-// Mounting Bounty Routes
+// Mounting Routes
 app.use("/api", bountyRoutes);
+app.use("/admin/api", adminRoutes);
 
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
