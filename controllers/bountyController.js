@@ -1,9 +1,10 @@
 const bountyService = require("../services/bountyService");
 
 function createBounty(req, res) {
-    const { repoLink, issueDescription } = req.body;
+    const { repoLink, issueDescription, user_id, bounty_amount } = req.body;
+
     bountyService
-        .createBounty(repoLink, issueDescription)
+        .createBounty(repoLink, issueDescription, user_id, bounty_amount)
         .then((result) => {
             res.status(201).json({ message: "Bounty successfully created." });
         })
