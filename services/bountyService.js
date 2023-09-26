@@ -14,23 +14,27 @@ function createBounty(repoLink, issueDescription, user_id, bounty_amount) {
 
     const values = [repoLink, issueDescription, user_id, bounty_amount];
 
-    return new Promise((resolve, reject) => {
+    const dbPromise = new Promise((resolve, reject) => {
         db.query(sqlQuery, values, function (err, rows) {
             if (err) reject(err);
             resolve(rows);
         });
     });
+
+    return dbPromise; // use logger here.
 }
 
 function listBounties() {
     const sqlQuery = `SELECT * FROM bounties WHERE isApproved = 1`;
 
-    return new Promise((resolve, reject) => {
+    const dbPromise = new Promise((resolve, reject) => {
         db.query(sqlQuery, function (err, rows) {
             if (err) reject(err);
             resolve(rows);
         });
     });
+
+    return dbPromise;
 }
 
 module.exports = {
