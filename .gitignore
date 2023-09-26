@@ -1,3 +1,7 @@
+# SQL Development Scripts
+scripts/
+scripts/*
+
 # Logs
 logs
 *.log
