@@ -1,25 +1,34 @@
 const bountyService = require("../services/bountyService");
 
-function createBounty(req, res) {
+async function createBounty(req, res) {
     const { repoLink, issueDescription, user_id, bounty_amount } = req.body;
-    bountyService
+    await bountyService
         .createBounty(repoLink, issueDescription, user_id, bounty_amount)
-        .then((result) => {
-            res.status(201).json({ message: "Bounty successfully created." });
+        .then(() => {
+            res.status(200).json({ message: "Bounty successfully created." });
         })
         .catch((err) => {
-            throw err;
+            if (err.code === "ER_NO_REFERENCED_ROW_2") {
+                res.status(400).json({
+                    message: "Invalid user_id. User does not exist.",
+                });
+            } else {
+                // Handle other errors as needed
+                res.status(500).json({ message: "Internal Server Error" });
+            }
         });
 }
 
-function listBounties(req, res) {
-    bountyService
+async function listBounties(req, res) {
+    await bountyService
         .listBounties()
         .then((result) => {
             res.status(200).json(result);
         })
-        .catch((err) => {
-            throw err;
+        .catch(() => {
+            res.status(500).json({
+                message: "Internal Server Error",
+            });
         });
 }
 

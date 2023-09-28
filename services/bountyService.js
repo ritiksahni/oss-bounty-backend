@@ -1,6 +1,12 @@
 const db = require("../config/db");
+const { logger } = require("../config/logger");
 
-function createBounty(repoLink, issueDescription, user_id, bounty_amount) {
+async function createBounty(
+    repoLink,
+    issueDescription,
+    user_id,
+    bounty_amount
+) {
     // columns: bounty_id, repoLink, issueDescription, isApproved, user_id (fk), bounty_amount
 
     const sqlQuery = `INSERT INTO bounties VALUES (
@@ -14,27 +20,39 @@ function createBounty(repoLink, issueDescription, user_id, bounty_amount) {
 
     const values = [repoLink, issueDescription, user_id, bounty_amount];
 
-    const dbPromise = new Promise((resolve, reject) => {
-        db.query(sqlQuery, values, function (err, rows) {
-            if (err) reject(err);
-            resolve(rows);
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
         });
-    });
 
-    return dbPromise; // use logger here.
+        logger.log("info", { message: "Bounty created by " + user_id });
+        return dbPromise;
+    } catch (error) {
+        logger.log("error", error);
+        throw error;
+    }
 }
 
-function listBounties() {
+async function listBounties() {
     const sqlQuery = `SELECT * FROM bounties WHERE isApproved = 1`;
 
-    const dbPromise = new Promise((resolve, reject) => {
-        db.query(sqlQuery, function (err, rows) {
-            if (err) reject(err);
-            resolve(rows);
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
         });
-    });
 
-    return dbPromise;
+        logger.log("info", { message: "Listed all approved bounties." });
+        return dbPromise;
+    } catch (error) {
+        logger.log("error", error);
+        throw err;
+    }
 }
 
 module.exports = {
