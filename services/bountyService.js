@@ -1,4 +1,5 @@
 const db = require("../utils/db");
+const { parseGithubUrl, getRepoData } = require("../utils/githubFetcher");
 const { logger } = require("../utils/logger");
 
 async function createBounty(
@@ -55,7 +56,26 @@ async function listBounties() {
     }
 }
 
+async function fetchRepoData(repo_url) {
+    try {
+        const repo_split_url = parseGithubUrl(repo_url);
+        const repo_data = await getRepoData(
+            repo_split_url.owner,
+            repo_split_url.repoName
+        );
+
+        logger.log("info", {
+            message: `Fetched repository data of ${repo_url}`,
+        });
+        return repo_data;
+    } catch (err) {
+        logger.log("error", err);
+        throw err;
+    }
+}
+
 module.exports = {
     createBounty,
     listBounties,
+    fetchRepoData,
 };

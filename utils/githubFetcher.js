@@ -28,7 +28,7 @@ async function getRepoData(repoOwner, repoName) {
     data["description"] = repoData.data.description;
     data["language"] = repoData.data.language;
 
-    console.log(data);
+    return data;
 }
 
 module.exports = { parseGithubUrl, getRepoData };

@@ -32,7 +32,21 @@ async function listBounties(req, res) {
         });
 }
 
+async function fetchRepoData(req, res) {
+    await bountyService
+        .fetchRepoData(req.body.repo_url)
+        .then((result) => {
+            res.status(200).json(result);
+        })
+        .catch(() => {
+            res.status(400).json({
+                message: "Repository cannot be found.",
+            });
+        });
+}
+
 module.exports = {
     createBounty,
     listBounties,
+    fetchRepoData,
 };
