@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../utils/db");
 const { logger } = require("../config/logger");
 
 async function createBounty(
