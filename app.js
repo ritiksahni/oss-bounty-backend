@@ -1,5 +1,5 @@
 // Local Module Imports
-const config = require("./config/oauth"); // Auth0 Configuration
+const config = require("./utils/oauth"); // Auth0 Configuration
 
 // Loading routes
 const bountyRoutes = require("./routes/bountyRoutes");

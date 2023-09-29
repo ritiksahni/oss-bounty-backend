@@ -1,5 +1,5 @@
 const db = require("../../utils/db");
-const { logger } = require("../../config/logger");
+const { logger } = require("../../utils/logger");
 
 async function listBounties() {
     const sqlQuery = `SELECT * FROM bounties`;
