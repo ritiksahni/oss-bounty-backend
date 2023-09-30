@@ -4,6 +4,7 @@ const config = require("./utils/oauth"); // Auth0 Configuration
 // Loading routes
 const bountyRoutes = require("./routes/bountyRoutes");
 const adminRoutes = require("./routes/admin/adminRoutes");
+const claimRoutes = require("./routes/claimRoutes");
 
 // Library Imports
 const { auth } = require("express-openid-connect");
@@ -23,8 +24,8 @@ app.get("/", (req, res) => {
 
 // Mounting Routes
 app.use("/api", bountyRoutes);
+app.use("/api", claimRoutes);
 app.use("/admin/api", adminRoutes);
-
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
 });
