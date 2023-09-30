@@ -13,6 +13,11 @@ async function addClaim(req, res) {
                     message:
                         "Invalid bounty_id or claimer_id. Bounty or User does not exist.",
                 });
+            } else if (err.code === "ER_DUP_ENTRY") {
+                res.status(400).json({
+                    message:
+                        "Claim already exists from this user for this bounty.",
+                });
             } else {
                 // Handle other errors as needed
                 res.status(500).json({ message: "Internal Server Error" });
