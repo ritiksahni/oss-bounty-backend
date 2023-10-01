@@ -55,4 +55,17 @@ async function listClaims(req, res) {
         });
 }
 
-module.exports = { addClaim, listClaims };
+async function approveClaim(req, res) {
+    const { bounty_id, claim_id } = req.body;
+
+    await claimService
+        .approveClaim(bounty_id, claim_id)
+        .then(() => {
+            res.status(200).json({ message: "Claim successfully approved." });
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Internal Server Error" });
+        });
+}
+
+module.exports = { addClaim, listClaims, approveClaim };

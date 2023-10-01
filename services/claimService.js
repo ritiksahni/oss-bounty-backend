@@ -50,4 +50,27 @@ async function listClaims(bounty_id) {
     }
 }
 
-module.exports = { addClaim, listClaims };
+async function approveClaim(bounty_id, claim_id) {
+    const sqlQuery = `UPDATE bounties SET approved_claim_id = ? WHERE bounty_id = ? AND approved_claim_id IS NULL;`;
+
+    const values = [claim_id, bounty_id];
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        logger.log("info", {
+            message: `Claim ${claim_id} approved for bounty ${bounty_id}`,
+        });
+
+        return dbPromise;
+    } catch (err) {
+        logger.log("error", err);
+        throw err;
+    }
+}
+
+module.exports = { addClaim, listClaims, approveClaim };
