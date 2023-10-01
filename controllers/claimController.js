@@ -25,4 +25,27 @@ async function addClaim(req, res) {
         });
 }
 
-module.exports = { addClaim };
+async function listClaims(req, res) {
+    const { bounty_id } = req.body;
+    const listOfClaims = [];
+    await claimService
+        .listClaims(bounty_id)
+        .then((claims) => {
+            claims.forEach((claim) => {
+                const { id, bounty_id, claimer_id, description } = claim;
+                listOfClaims.push({
+                    id,
+                    bounty_id,
+                    claimer_id,
+                    description,
+                });
+            });
+
+            res.status(200).json(listOfClaims);
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Internal Server Error" });
+        });
+}
+
+module.exports = { addClaim, listClaims };

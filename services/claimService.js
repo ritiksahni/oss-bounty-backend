@@ -27,4 +27,27 @@ async function addClaim(bounty_id, claimer_id, description) {
     }
 }
 
-module.exports = { addClaim };
+async function listClaims(bounty_id) {
+    const sqlQuery = `SELECT * FROM claims WHERE bounty_id = ?`;
+
+    const values = [bounty_id];
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        logger.log("info", {
+            message: `Listed all claims for bounty ${bounty_id}`,
+        });
+
+        return dbPromise;
+    } catch (err) {
+        logger.log("error", err);
+        throw err;
+    }
+}
+
+module.exports = { addClaim, listClaims };
