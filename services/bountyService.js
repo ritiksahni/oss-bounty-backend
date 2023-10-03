@@ -56,6 +56,27 @@ async function listBounties() {
     }
 }
 
+async function getBountyById(bounty_id) {
+    const sqlQuery = `SELECT * FROM bounties WHERE bounty_id = ?`;
+    const values = [bounty_id];
+
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        logger.log("info", { message: `Listed bounty_id ${bounty_id}` });
+
+        return dbPromise;
+    } catch (error) {
+        logger.log("error", error);
+        throw err;
+    }
+}
+
 async function fetchRepoData(repo_url) {
     try {
         const repo_split_url = parseGithubUrl(repo_url);
@@ -78,4 +99,5 @@ module.exports = {
     createBounty,
     listBounties,
     fetchRepoData,
+    getBountyById,
 };
