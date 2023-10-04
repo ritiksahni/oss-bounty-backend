@@ -16,7 +16,8 @@ async function createBounty(
         ?,
         DEFAULT,
         ?,
-        ?
+        ?,
+        DEFAULT
     )`;
 
     const values = [repoLink, issueDescription, user_id, bounty_amount];

@@ -64,7 +64,13 @@ async function approveClaim(req, res) {
             res.status(200).json({ message: "Claim successfully approved." });
         })
         .catch((err) => {
-            res.status(500).json({ message: "Internal Server Error" });
+            if (err.message == "Claim does not belong to bounty") {
+                res.status(400).json({
+                    message: `Claim ${claim_id} does not belong to bounty ${bounty_id}`,
+                });
+            } else {
+                res.status(500).json({ message: "Internal Server Error" });
+            }
         });
 }
 

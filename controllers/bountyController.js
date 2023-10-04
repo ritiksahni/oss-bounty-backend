@@ -1,7 +1,8 @@
 const bountyService = require("../services/bountyService");
 
 async function createBounty(req, res) {
-    const { repoLink, issueDescription, user_id, bounty_amount } = req.body;
+    const user_id = req.oidc.user.sub;
+    const { repoLink, issueDescription, bounty_amount } = req.body;
     await bountyService
         .createBounty(repoLink, issueDescription, user_id, bounty_amount)
         .then(() => {
