@@ -50,6 +50,7 @@ async function listClaims(bounty_id) {
     }
 }
 
+// Function for internal use only. Do not expose as an API endpoint.
 async function getClaimById(claim_id) {
     const sqlQuery = `SELECT * FROM claims WHERE id = ?;`;
 
@@ -81,7 +82,7 @@ async function approveClaim(bounty_id, claim_id) {
             message: `Claim ${claim_id} does not belong to bounty ${bounty_id}`,
         });
         throw new Error("Claim does not belong to bounty");
-    }
+    } // To ensure the claim_id belongs to the bounty_id in the POST request.
 
     const sqlQuery = `UPDATE bounties SET approved_claim_id = ? WHERE bounty_id = ? AND approved_claim_id IS NULL;`;
 
