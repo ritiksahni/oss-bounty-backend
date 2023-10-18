@@ -48,8 +48,6 @@ async function listBounties() {
                 resolve(rows);
             });
         });
-
-        logger.log("info", { message: "Listed all approved bounties." });
         return dbPromise;
     } catch (error) {
         logger.log("error", error);
