@@ -7,17 +7,21 @@ const adminRoutes = require("./routes/admin/adminRoutes");
 const claimRoutes = require("./routes/claimRoutes");
 
 // Library Imports
-const { auth } = require("express-openid-connect");
+const { auth, requiresAuth } = require("express-openid-connect");
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 const port = 3000;
+const corsOptions = {
+    origin: "http://localhost:5173",
+    optionsSuccessStatus: 200,
+};
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
 app.use(express.json());
-app.use(cors()); // Enable CORS for all routes.
+app.use(cors(corsOptions)); // Enable CORS for all routes.
 
 // req.isAuthenticated is provided from the auth router
 app.get("/", (req, res) => {
