@@ -7,6 +7,9 @@ const config = {
     clientID: process.env.AUTH0_CLIENT_ID,
     issuerBaseURL: process.env.AUTH0_BASE_URL,
     secret: process.env.AUTH0_SECRET,
+    issuer: process.env.AUTH0_BASE_URL,
+    audience: process.env.AUTH0_AUDIENCE,
+    tokenSigningAlg: "HS256",
 };
 
 module.exports = config;
