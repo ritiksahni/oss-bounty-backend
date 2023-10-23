@@ -1,11 +1,6 @@
 const bountyService = require("../services/bountyService");
 
 async function createBounty(req, res) {
-    if (!req.oidc.user) {
-        res.status(401).json({ message: "User is not logged in." });
-        return;
-    }
-
     const user_id = req.oidc.user.sub;
     const { repoLink, issueDescription, bounty_amount } = req.body;
     await bountyService
