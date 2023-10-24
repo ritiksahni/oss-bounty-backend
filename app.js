@@ -5,17 +5,28 @@
 const bountyRoutes = require("./routes/bountyRoutes");
 const adminRoutes = require("./routes/admin/adminRoutes");
 const claimRoutes = require("./routes/claimRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // Library Imports
 const express = require("express");
 const cors = require("cors");
+const passport = require("passport");
 
 const app = express();
 const port = 3000;
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+// Middlewares
+app.use(
+    require("express-session")({
+        secret: "thisisasupersecretsecret",
+        resave: true,
+        saveUninitialized: true,
+    })
+);
 app.use(express.json());
 app.use(cors());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // req.isAuthenticated is provided from the auth router
 app.get("/", (req, res) => {
@@ -25,6 +36,7 @@ app.get("/", (req, res) => {
 // Mounting Routes
 app.use("/api", bountyRoutes);
 app.use("/api", claimRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/admin/api", adminRoutes);
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
