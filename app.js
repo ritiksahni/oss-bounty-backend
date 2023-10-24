@@ -18,7 +18,7 @@ const port = 3000;
 // Middlewares
 app.use(
     require("express-session")({
-        secret: "thisisasupersecretsecret",
+        secret: process.env.EXPRESS_SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
     })
