@@ -11,6 +11,7 @@ router.get(
     "/callback",
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
+        req.session.user = req.user;
         res.redirect(`${process.env.REACT_APP_URL}/dashboard`);
     }
 );
@@ -18,7 +19,7 @@ router.get(
 router.get("/logout", (req, res) => {
     req.session = null;
     req.logout();
-    res.redirect("/");
+    res.redirect(`${process.env.REACT_APP_URL}`);
 });
 
 module.exports = router;
