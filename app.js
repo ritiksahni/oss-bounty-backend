@@ -14,8 +14,15 @@ const passport = require("passport");
 
 const app = express();
 const port = 3000;
+const corsOptions = {
+    origin: `${process.env.REACT_APP_URL}`,
+    optionsSuccessStatus: 200,
+    credentials: true,
+};
 
 // Middlewares
+require("./middlewares/passport.middleware"); // To get passport.js configuration.
+
 app.use(
     require("express-session")({
         secret: process.env.EXPRESS_SESSION_SECRET,
@@ -24,7 +31,15 @@ app.use(
     })
 );
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", `${process.env.REACT_APP_URL}`);
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 

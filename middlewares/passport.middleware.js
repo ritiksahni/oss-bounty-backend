@@ -1,6 +1,42 @@
 const GithubStrategy = require("passport-github").Strategy;
 const passport = require("passport");
-const { getUserFromDb, createUserInDb } = require("../services/authService");
+const db = require("../utils/db");
+
+async function getUserFromDb(user_id) {
+    const sqlQuery = `SELECT * FROM users WHERE user_id = ?`;
+    const values = [user_id];
+
+    try {
+        dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        return dbPromise;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function createUserInDb(user_id, email, username) {
+    const sqlQuery = `INSERT INTO users VALUES (?, ?, ?)`;
+    const values = [user_id, email, username];
+
+    try {
+        const dbPromise = new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        return dbPromise;
+    } catch (err) {
+        throw err;
+    }
+}
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -10,27 +46,40 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-passport.use(
-    new GithubStrategy(
-        {
-            clientID: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "/api/auth/callback",
-        },
-        async function (accessToken, refreshToken, profile, cb) {
-            const user_id = `github|${profile.id}`;
+async function verifyUser(accessToken, refreshToken, profile, done) {
+    const user_id = profile.id;
+
+    try {
+        const user = await getUserFromDb(user_id);
+
+        if (user.length === 0) {
             const email = profile.emails[0].value;
             const username = profile.username;
-
-            await getUserFromDb(user_id).then((result) => {
-                if (result.length === 0) {
-                    createUserInDb(user_id, email, username);
-                }
-            }); // To add a new user to the database.
-
-            return cb(null, [accessToken, refreshToken, profile]);
+            await createUserInDb(user_id, email, username);
+            const user = await getUserFromDb(user_id);
+            done(null, [accessToken, user]);
+        } else {
+            done(null, [accessToken, user]);
         }
-    )
-);
+    } catch (err) {
+        done(err);
+    }
+}
+
+const githubConfig = {
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "/api/auth/callback",
+};
+
+passport.use(new GithubStrategy(githubConfig, verifyUser));
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
 
 module.exports = passport;
