@@ -38,14 +38,6 @@ async function createUserInDb(user_id, email, username) {
     }
 }
 
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
-
 async function verifyUser(accessToken, refreshToken, profile, done) {
     const user_id = profile.id;
 
