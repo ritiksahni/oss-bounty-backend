@@ -43,7 +43,6 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// req.isAuthenticated is provided from the auth router
 app.get("/", (req, res) => {
     res.redirect("http://localhost:5173");
 });

@@ -1,7 +1,7 @@
 const bountyService = require("../services/bountyService");
 
 async function createBounty(req, res) {
-    const user_id = req.oidc.user.sub;
+    const user_id = `github|${req.session.user[0].user_id}`;
     const { repoLink, issueDescription, bounty_amount } = req.body;
     await bountyService
         .createBounty(repoLink, issueDescription, user_id, bounty_amount)
@@ -10,7 +10,7 @@ async function createBounty(req, res) {
         })
         .catch((err) => {
             if (err.code === "ER_NO_REFERENCED_ROW_2") {
-                res.status(400).json({
+                res.status(500).json({
                     message: "Invalid user_id. User does not exist.",
                 });
             } else {

@@ -44,14 +44,15 @@ async function verifyUser(accessToken, refreshToken, profile, done) {
     try {
         const user = await getUserFromDb(user_id);
 
+        // If no user is found, create a new user. Otherwise, return the user.
         if (user.length === 0) {
             const email = profile.emails[0].value;
             const username = profile.username;
             await createUserInDb(user_id, email, username);
             const user = await getUserFromDb(user_id);
-            done(null, [accessToken, user]);
+            done(null, user);
         } else {
-            done(null, [accessToken, user]);
+            done(null, user);
         }
     } catch (err) {
         done(err);
