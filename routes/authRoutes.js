@@ -22,4 +22,8 @@ router.get("/logout", (req, res) => {
     res.redirect(`${process.env.REACT_APP_URL}`);
 });
 
+router.get("/user", (req, res) => {
+    res.json({ user: req.session.user });
+});
+
 module.exports = router;
