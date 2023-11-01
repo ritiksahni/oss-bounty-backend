@@ -17,9 +17,13 @@ router.get(
 );
 
 router.get("/logout", (req, res) => {
-    req.session = null;
-    req.logout();
-    res.redirect(`${process.env.REACT_APP_URL}`);
+    req.logout(function (err) {
+        if (err) {
+            return res.status(500).json({ error: err.toString() });
+        }
+        req.session = null;
+        res.redirect(`${process.env.REACT_APP_URL}`);
+    });
 });
 
 router.get("/user", (req, res) => {
