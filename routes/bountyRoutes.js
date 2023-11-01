@@ -6,5 +6,6 @@ const { isAuthenticated } = require("../middlewares/isAuth.middleware");
 router.get("/bounties", bountyController.listBounties);
 router.post("/get-repo-data", bountyController.fetchRepoData);
 router.post("/add-bounty", isAuthenticated, bountyController.createBounty);
+router.post("/get-bounty", isAuthenticated, bountyController.getBountyById);
 
 module.exports = router;

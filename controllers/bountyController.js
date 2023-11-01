@@ -46,8 +46,23 @@ async function fetchRepoData(req, res) {
         });
 }
 
+async function getBountyById(req, res) {
+    const { bounty_id } = req.body;
+    await bountyService
+        .getBountyById(bounty_id)
+        .then((result) => {
+            res.status(200).json(result[0]);
+        })
+        .catch(() => {
+            res.status(400).json({
+                message: "Bounty cannot be found.",
+            });
+        });
+}
+
 module.exports = {
     createBounty,
     listBounties,
     fetchRepoData,
+    getBountyById,
 };
