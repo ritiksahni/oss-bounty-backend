@@ -60,9 +60,24 @@ async function getBountyById(req, res) {
         });
 }
 
+async function getBountyCreator(req, res) {
+    const { user_id } = req.body;
+    await bountyService
+        .getBountyCreator(user_id)
+        .then((result) => {
+            res.status(200).json(result);
+        })
+        .catch(() => {
+            res.status(400).json({
+                message: "Bounty creator cannot be found.",
+            });
+        });
+}
+
 module.exports = {
     createBounty,
     listBounties,
     fetchRepoData,
     getBountyById,
+    getBountyCreator,
 };

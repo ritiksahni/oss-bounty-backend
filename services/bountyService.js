@@ -94,9 +94,28 @@ async function fetchRepoData(repo_url) {
     }
 }
 
+async function getBountyCreator(user_id) {
+    const sqlQuery = `SELECT username FROM users WHERE user_id = ?`;
+    const values = [user_id];
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        return dbPromise;
+    } catch (error) {
+        logger.log("error", error);
+        throw error;
+    }
+}
+
 module.exports = {
     createBounty,
     listBounties,
     fetchRepoData,
     getBountyById,
+    getBountyCreator,
 };
