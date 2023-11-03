@@ -65,7 +65,7 @@ async function getBountyCreator(req, res) {
     await bountyService
         .getBountyCreator(user_id)
         .then((result) => {
-            res.status(200).json(result);
+            res.status(200).json(result[0]);
         })
         .catch(() => {
             res.status(400).json({
