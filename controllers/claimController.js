@@ -33,7 +33,7 @@ async function listClaims(req, res) {
         .listClaims(bounty_id)
         .then((claims) => {
             if (claims.length === 0) {
-                res.status(400).json({
+                res.status(200).json({
                     message: "No claims for this bounty. ",
                 });
             } else {
