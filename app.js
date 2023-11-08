@@ -28,6 +28,9 @@ app.use(
         secret: process.env.EXPRESS_SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        },
     })
 );
 app.use(express.json());
