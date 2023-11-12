@@ -1,7 +1,8 @@
 const claimService = require("../services/claimService");
 
 async function addClaim(req, res) {
-    const { bounty_id, claimer_id, description } = req.body;
+    const claimer_id = `github|${req.session.user[0].user_id}`;
+    const { bounty_id, description } = req.body;
     await claimService
         .addClaim(bounty_id, claimer_id, description)
         .then(() => {
