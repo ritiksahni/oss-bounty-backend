@@ -6,10 +6,11 @@ const {
 } = require("../middlewares/checkUser.middleware");
 const { isAuthenticated } = require("../middlewares/isAuth.middleware");
 
-router.post("/add-claim", claimController.addClaim);
 router.post("/list-claims", claimController.listClaims);
 
-// Authenticated: Only bounty creator can approve claims.
+// Authenticated Routes
+router.post("/add-claim", isAuthenticated, claimController.addClaim);
+
 router.post(
     "/approve-claim",
     isAuthenticated,
