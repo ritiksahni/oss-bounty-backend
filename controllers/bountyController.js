@@ -1,7 +1,8 @@
 const bountyService = require("../services/bountyService");
 
 async function createBounty(req, res) {
-    const user_id = `github|${req.session.user[0].user_id}`;
+    const user_id = req.session.user[0].user_id; // example: `github|12345678`
+    console.log(req.session);
     const { repoLink, issueDescription, bounty_amount } = req.body;
     await bountyService
         .createBounty(repoLink, issueDescription, user_id, bounty_amount)

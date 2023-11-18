@@ -106,4 +106,23 @@ async function approveClaim(bounty_id, claim_id) {
     }
 }
 
-module.exports = { addClaim, listClaims, approveClaim };
+async function getClaimCreator(claimer_id) {
+    const sqlQuery = `SELECT username FROM users WHERE user_id = ?`;
+    const values = [claimer_id];
+
+    try {
+        const dbPromise = await new Promise((resolve, reject) => {
+            db.query(sqlQuery, values, function (err, rows) {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+
+        return dbPromise;
+    } catch (err) {
+        logger.log("error", err);
+        throw err;
+    }
+}
+
+module.exports = { addClaim, listClaims, approveClaim, getClaimCreator };

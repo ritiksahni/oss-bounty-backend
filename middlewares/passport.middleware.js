@@ -39,7 +39,7 @@ async function createUserInDb(user_id, email, username) {
 }
 
 async function verifyUser(accessToken, refreshToken, profile, done) {
-    const user_id = profile.id;
+    const user_id = `github|${profile.id}`;
 
     try {
         const user = await getUserFromDb(user_id);

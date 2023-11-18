@@ -7,6 +7,7 @@ const {
 const { isAuthenticated } = require("../middlewares/isAuth.middleware");
 
 router.post("/list-claims", claimController.listClaims);
+router.post("/get-claim-creator", claimController.getClaimCreator);
 
 // Authenticated Routes
 router.post("/add-claim", isAuthenticated, claimController.addClaim);

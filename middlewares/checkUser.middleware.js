@@ -3,7 +3,7 @@ const { logger } = require("../utils/logger");
 
 async function checkIfUserIsBountyCreator(req, res, next) {
     await getBountyById(req.body.bounty_id).then((bounty) => {
-        const user_id = `github|${req.session.user[0].user_id}`;
+        const user_id = req.session.user[0].user_id;
         if (bounty.length === 0) {
             logger.log("error", {
                 message: `User ${user_id} is trying to approve a claim for bounty ${req.body.bounty_id} but bounty does not exist.`,

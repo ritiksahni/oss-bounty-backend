@@ -1,7 +1,7 @@
 const claimService = require("../services/claimService");
 
 async function addClaim(req, res) {
-    const claimer_id = `github|${req.session.user[0].user_id}`;
+    const claimer_id = req.session.user[0].user_id;
     const { bounty_id, description } = req.body;
     await claimService
         .addClaim(bounty_id, claimer_id, description)
@@ -75,4 +75,18 @@ async function approveClaim(req, res) {
         });
 }
 
-module.exports = { addClaim, listClaims, approveClaim };
+async function getClaimCreator(req, res) {
+    const { claimer_id } = req.body;
+    await claimService
+        .getClaimCreator(claimer_id)
+        .then((result) => {
+            res.status(200).json(result[0]);
+        })
+        .catch((err) => {
+            res.status(400).json({
+                message: "Claim creator cannot be found.",
+            });
+        });
+}
+
+module.exports = { addClaim, listClaims, approveClaim, getClaimCreator };
