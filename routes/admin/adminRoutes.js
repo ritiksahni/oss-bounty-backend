@@ -4,6 +4,5 @@ const operationsController = require("../../controllers/admin/operationsControll
 
 router.get("/bounties", operationsController.listBounties);
 router.post("/approve-bounty", operationsController.approveBounty);
-router.post("/add-user", operationsController.addUser);
 
 module.exports = router;

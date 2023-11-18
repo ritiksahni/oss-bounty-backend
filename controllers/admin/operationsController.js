@@ -26,22 +26,7 @@ async function approveBounty(req, res) {
         });
 }
 
-async function addUser(req, res) {
-    await operationsService
-        .addUser(req.body.user_id, req.body.email, req.body.username)
-        .then(() => {
-            res.status(200).json({ message: "User added to database." });
-        })
-        .catch(() => {
-            res.status(400).json({
-                message:
-                    "User cannot be added to database. Check user details.",
-            });
-        });
-}
-
 module.exports = {
     listBounties,
     approveBounty,
-    addUser,
 };

@@ -50,28 +50,7 @@ async function approveBounty(bounty_id) {
     }
 }
 
-async function addUser(user_id, email, username) {
-    const sqlQuery = `INSERT INTO users VALUES (?, ?, ?)`;
-    const values = [user_id, email, username];
-
-    try {
-        const dbPromise = new Promise((resolve, reject) => {
-            db.query(sqlQuery, values, function (err, rows) {
-                if (err) reject(err);
-                resolve(rows);
-            });
-        });
-
-        logger.log("info", { message: "Added user to database: " + user_id });
-        return dbPromise;
-    } catch (err) {
-        logger.log("error", err);
-        throw err;
-    }
-}
-
 module.exports = {
     listBounties,
     approveBounty,
-    addUser,
 };
