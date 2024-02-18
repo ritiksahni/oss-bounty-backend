@@ -23,11 +23,9 @@ async function getRepoData(repoOwner, repoName) {
         },
     });
 
-    data["name"] = repoData.data.name;
-    data["owner"] = repoData.data.owner.login;
-    data["description"] = repoData.data.description;
-    data["language"] = repoData.data.language;
-
+    const { name, owner, description, language } = repoData.data; 
+    data = { name, owner: owner.login, description, language };
+    
     return data;
 }
 
